@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://unpkg.com/three@0.134.0/build/three.js"></script>
+  <script src="https://unpkg.com/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
+</head>
+
+<body>
+<div id="my_canvas" ></div>
+
+<script>
+
+
+	let  width       =    800;
+	let  height      =    600;
+
+	let canvas_id = document.getElementById("my_canvas");
+
+	let this_vrm;
+
+	let renderer = new THREE.WebGLRenderer();
+	renderer.setSize( width, height );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setClearColor(0xeeeeee);
+
+	canvas_id.appendChild( renderer.domElement );
+
+	let camera = new THREE.PerspectiveCamera(50.0, width/height, 0.1, 20.0);
+	camera.position.set( 0,  1.5,  0.5 );
+
+	let scene = new THREE.Scene();
+
+	let light = new THREE.DirectionalLight( 0xffffff );
+	light.position.set( 1.0, 1.0, 1.0 ).normalize();
+	scene.add( light );
+
+	let loader = new THREE.GLTFLoader();
+	loader.load(  './sample1.vrm',  ( gltf ) => {
+
+		THREE.VRM.from( gltf ).then( ( vrm ) => {
+
+			this_vrm = vrm;
+			scene.add( vrm.scene );
+
+			let bone_name;
+			bone_name = THREE.VRMSchema.HumanoidBoneName.Hips;
+			vrm.humanoid.getBoneNode(bone_name).position.set(0,       1, -1);
+			vrm.humanoid.getBoneNode(bone_name).rotation.set(0, Math.PI,  0);
+
+			renderer.render(scene, camera);
+
+		});
+	});
+
+</script>
+</body>
+</html>
