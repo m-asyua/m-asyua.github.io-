@@ -117,7 +117,7 @@ function read_vrm_file_api(input){
 	reader.readAsDataURL(input);
 }
 
-function vrm_model_load(character_id, vrm_file_name, x,y,z){
+function vrm_model_load(vrm_file_name, x,y,z){
 	my_loader = new THREE.GLTFLoader();
 	my_loader.crossOrigin = 'anonymous';
 
