@@ -54,7 +54,7 @@
 			scene.add( vrm.scene );
 
 			let bone_name;
-			bone_name = THREE.VRMSchema.HumanoidBoneName.Chest;
+			bone_name = THREE.VRMSchema.HumanoidBoneName.Hips;
 			vrm.humanoid.getBoneNode(bone_name).position.set(0,       1, -1);
 			vrm.humanoid.getBoneNode(bone_name).rotation.set(0, Math.PI,  0);
 
@@ -105,7 +105,7 @@ control3_id.addEventListener('click', function(){
 function hip_move(d){
 	console.log("d",d);
 	let bone_name;
-	bone_name = THREE.VRMSchema.HumanoidBoneName.Hips
+	bone_name = THREE.VRMSchema.HumanoidBoneName.Chest;
 	this_vrm.humanoid.getBoneNode(bone_name).rotation.x   +=   Math.PI /180 * d;
 	renderer.render(scene, camera);
 }
