@@ -96,13 +96,13 @@ control3_id.addEventListener('click', function(){
 	for(let i=0;i<20;i++){
 	console.log(i);
 		let d = 0;
-		if( i < 10 ){ d = 3; }else{ d = -3; }
-		setTimeout(hip_move,150*i,d);
+		if( i < 10 ){ d = -3; }else{ d = 3; }
+		setTimeout(chest_move,150*i,d);
 	}
 
 }, true)
 
-function hip_move(d){
+function chest_move(d){
 	console.log("d",d);
 	let bone_name;
 	bone_name = THREE.VRMSchema.HumanoidBoneName.Chest;
