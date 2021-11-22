@@ -31,7 +31,7 @@
 	canvas_id.appendChild( renderer.domElement );
 
 	let camera = new THREE.PerspectiveCamera(50.0, width/height, 0.1, 20.0);
-	camera.position.set( 0,  1.5,  0.5 );
+	camera.position.set( 0,  0.5,  1 );
 
 	let scene = new THREE.Scene();
 
@@ -40,48 +40,47 @@
 	scene.add( light );
 
 	let loader = new THREE.GLTFLoader();
-	loader.load(  './sample1.vrm',  ( gltf ) => {
+	loader.load('./sample1.vrm', ( gltf ) => {
 
 		THREE.VRM.from( gltf ).then( ( vrm ) => {
-
 			this_vrm = vrm;
 			scene.add( vrm.scene );
 
-			let bone_name;
-			bone_name = THREE.VRMSchema.HumanoidBoneName.Hips;
-			vrm.humanoid.getBoneNode(bone_name).position.set(0,       1, -1);
-			vrm.humanoid.getBoneNode(bone_name).rotation.set(0, Math.PI,  0);
+			let bone;
+			bone = THREE.VRMSchema.HumanoidBoneName.Hips;
+			vrm.humanoid.getBoneNode(bone).position.set(0,0,0);
+			vrm.humanoid.getBoneNode(bone).rotation.set(0,Math.PI,0);
 
-			bone_name = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
-			vrm.humanoid.getBoneNode(bone_name).rotation.z
+			bone
+			 = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
+			vrm.humanoid.getBoneNode(bone).rotation.z
 			                            = Math.PI /180 *  70;
-
-			bone_name = THREE.VRMSchema.HumanoidBoneName.RightUpperArm;
-			vrm.humanoid.getBoneNode(bone_name).rotation.z
+			bone
+			 = THREE.VRMSchema.HumanoidBoneName.RightUpperArm;
+			vrm.humanoid.getBoneNode(bone).rotation.z
 			                            = Math.PI /180 *  -70;
 
 			renderer.render(scene, camera);
-
 		});
 	});
 
 let control1_id = document.getElementById('control1');
 control1_id.addEventListener('click', function(){
-  let bone_name;
-  bone_name = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
-  this_vrm.humanoid.getBoneNode(bone_name).rotation.z
-                                  +=   Math.PI /180 * -5;
+  let bone
+   = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
+  this_vrm.humanoid.getBoneNode(bone).rotation.z
+                             +=   Math.PI /180 * -5;
   renderer.render(scene, camera);
 }, true)
 
 let control2_id = document.getElementById('control2');
 control2_id.addEventListener('click', function(){
-	let bone_name;
-	bone_name = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm
-	this_vrm.humanoid.getBoneNode(bone_name).rotation.z   +=   Math.PI /180 * 5;
+	let bone
+	 = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm
+	this_vrm.humanoid.getBoneNode(bone).rotation.z
+	                           +=   Math.PI /180 * 5;
 	renderer.render(scene, camera);
 }, true)
-
 
 </script>
 </body>
