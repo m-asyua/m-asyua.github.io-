@@ -291,7 +291,7 @@ function vrm_model_load(vrm_file_name, x,y,z){
 
 			let bone;
 			bone = THREE.VRMSchema.HumanoidBoneName.Hips;
-			vrm.humanoid.getBoneNode(bone).position.set(0,0,0);
+			vrm.humanoid.getBoneNode(bone).position.set(x,y,z);
 			vrm.humanoid.getBoneNode(bone).rotation.set(0,Math.PI,0);
 
 			bone = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
