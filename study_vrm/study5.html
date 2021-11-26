@@ -37,7 +37,7 @@
 	canvas_id.appendChild( renderer.domElement );
 
 	let camera = new THREE.PerspectiveCamera(50.0, width/height, 0.1, 20.0);
-	camera.position.set( 0,  0.5,  1 );
+	camera.position.set( 0,  0.3,  1.5 );
 
 	let scene = new THREE.Scene();
 
@@ -97,7 +97,7 @@ control3_id.addEventListener('click', function(){
 	console.log(i);
 		let d = 0;
 		if( i < 10 ){ d = -3; }else{ d = 3; }
-		setTimeout(chest_move,150*i,d);
+		setTimeout(chest_move,100*i,d);
 	}
 
 }, true)
@@ -159,11 +159,11 @@ function vrm_model_load(vrm_file_name, x,y,z){
 
 			bone = THREE.VRMSchema.HumanoidBoneName.LeftUpperArm;
 			vrm.humanoid.getBoneNode(bone).rotation.z
-			                            = Math.PI /180 *  70;
+			                            = Math.PI /180 *  80;
 
 			bone = THREE.VRMSchema.HumanoidBoneName.RightUpperArm;
 			vrm.humanoid.getBoneNode(bone).rotation.z
-			                            = Math.PI /180 *  -70;
+			                            = Math.PI /180 *  -80;
 
 			renderer.render(scene, camera);
 
