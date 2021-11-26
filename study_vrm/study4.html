@@ -12,23 +12,21 @@
 
 <input id="read_file_vrm0" type="file" /> <br>
 <br>
-<input type="button" id="control1" value="test1" ><br>
-<input type="button" id="control2" value="test2" ><br>
-<br>
-<input type="button" id="control3" value="お辞儀のテスト" ><br>
+<input type="button" id="control1" value="マイナス回転" style="font-size:40px;"><br>
+<input type="button" id="control2" value="プラス回転" style="font-size:40px;"><br>
 
 <script>
 
 
-	let  width       =    600;
-	let  height      =    400;
+	let  width       =    800;
+	let  height      =    600;
 
 	let canvas_id = document.getElementById("my_canvas");
 
 	let this_vrm;
 
 	let character_load_flg  =  -1;
-
+	
 	let renderer = new THREE.WebGLRenderer();
 	renderer.setSize( width, height );
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -88,26 +86,6 @@ control2_id.addEventListener('click', function(){
 	renderer.render(scene, camera);
 }, true)
 
-
-let control3_id = document.getElementById('control3');
-control3_id.addEventListener('click', function(){
-
-
-	for(let i=0;i<20;i++){
-	console.log(i);
-		let d = 0;
-		if( i < 10 ){ d = -3; }else{ d = 3; }
-		setTimeout(chest_move,150*i,d);
-	}
-
-}, true)
-
-function chest_move(d){
-	let bone
-	  = THREE.VRMSchema.HumanoidBoneName.Chest;
-	this_vrm.humanoid.getBoneNode(bone).rotation.x   +=   Math.PI /180 * d;
-	renderer.render(scene, camera);
-}
 
 
 document.getElementById('read_file_vrm0').addEventListener('change', function(){
