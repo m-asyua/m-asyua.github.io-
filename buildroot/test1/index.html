@@ -118,7 +118,7 @@ window.onload = function()
 {
 
 
-
+console.log("start1");
     emulator = window.emulator = new V86Starter({
         wasm_path: "build/v86.wasm",
         memory_size: 128 * 1024 * 1024,
@@ -137,7 +137,8 @@ window.onload = function()
         autostart: true,
     });
     
-    
+    console.log("start2");
+
     
     
      function format_timestamp(time)
@@ -190,12 +191,18 @@ window.onload = function()
             document.getElementById("running_time").textContent = format_timestamp(running_time / 1000 | 0);
         }
 
+    
+        console.log("start3");
+
         emulator.add_listener("emulator-started", function()
         {
             last_tick = Date.now();
             interval = setInterval(update_info, 1000);
         });
 
+    
+        console.log("start4");
+    
         emulator.add_listener("emulator-stopped", function()
         {
             update_info();
@@ -277,6 +284,9 @@ window.onload = function()
             document.getElementById("info_storage_sectors_written").textContent = stats_storage.write_sectors;
         });
         
+    
+    
+        console.log("start_end");
 }
 
 
