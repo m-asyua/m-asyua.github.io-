@@ -79,7 +79,7 @@ f1.addEventListener('change', function()
  console.log("3");
              loader.get_buffer(function(buffer) 
              { 
- console.log("31");
+ console.log("31,"+file.name);
                  emulator.create_file("/" + file.name, new Uint8Array(buffer)); 
  console.log("33");
              }); 
