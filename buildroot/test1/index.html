@@ -1,0 +1,289 @@
+<!doctype html>
+
+<title>Emulator</title>
+
+<div id="screen_container">
+    <div style="white-space: pre; font: 18px monospace; line-height: 18px"></div>
+    <canvas style="display: none"></canvas>
+</div>
+
+<table border="1">
+<tr>
+<td>
+<label> 
+     Send files to emulator<br> 
+     <input type="file" id="filesystem_send_file" multiple> 
+ </label> 
+</td><td>
+ <label> 
+     Get file from emulator<br> 
+     <input type="text" id="filesystem_get_file" placeholder="Absolute path"> 
+ </label> 
+ </td>
+ </tr>
+</table>
+
+   <div id="runtime_infos" >
+     <br>
+     Running: <span id="running_time">0s</span> <br>
+     Speed: <span id="speed">0</span> mIPS<br>
+     Avg speed: <span id="avg_speed">0</span> mIPS<br>
+     <br>
+   </div>
+
+    <div id="info_storage" >
+        <b>IDE device (HDA or CDROM)</b><br>
+        Sectors read: <span id="info_storage_sectors_read">0</span><br>
+        Bytes read: <span id="info_storage_bytes_read">0</span><br>
+        Sectors written: <span id="info_storage_sectors_written">0</span><br>
+        Bytes written: <span id="info_storage_bytes_written">0</span><br>
+        Status: <span id="info_storage_status"></span><br>
+        <br>
+    </div>
+
+    <div id="info_filesystem" >
+        <b>9p Filesystem</b><br>
+        Bytes read: <span id="info_filesystem_bytes_read">0</span><br>
+        Bytes written: <span id="info_filesystem_bytes_written">0</span><br>
+        <div style="white-space: nowrap; overflow-x: hidden">Last file: <span id="info_filesystem_last_file"></span></div>
+        Status: <span id="info_filesystem_status"></span><br>
+        <br>
+    </div>
+
+
+
+<div id="terminal"></div>
+
+
+
+<script src="./build/lib.js"></script>
+<script src="./build/lib2.js"></script>
+<script src="./build/libv86.js"></script>
+
+<script>
+//"use strict";
+
+
+document.getElementById("filesystem_send_file").addEventListener('change', function() 
+ { 
+     Array.prototype.forEach.call(this.files, function(file) 
+     { 
+         var loader = new v86util.SyncFileBuffer(file); 
+         loader.onload = function() 
+         { 
+             loader.get_buffer(function(buffer) 
+             { 
+                 emulator.create_file("/" + file.name, new Uint8Array(buffer)); 
+             }); 
+         }; 
+         loader.load(); 
+     }, this); 
+  
+     this.value = ""; 
+     this.blur(); 
+ }); 
+  
+  
+document.getElementById("filesystem_get_file").addEventListener('keypress', function(e) 
+ { 
+     if(e.which !== 13) 
+     { 
+         return; 
+     } 
+  
+     this.disabled = true; 
+  
+     emulator.read_file(this.value, function(err, uint8array) 
+     { 
+         this.disabled = false; 
+  
+         if(uint8array) 
+         { 
+             var filename = this.value.replace(/\/$/, "").split("/"); 
+             filename = filename[filename.length - 1] || "root"; 
+  
+             dump_file(uint8array, filename); 
+             this.value = ""; 
+         } 
+         else 
+         { 
+             alert("Can't read file"); 
+         } 
+     }.bind(this)); 
+ }); 
+
+
+var emulator;
+window.onload = function()
+{
+
+
+
+    emulator = window.emulator = new V86Starter({
+        wasm_path: "./build/v86.wasm",
+        memory_size: 128 * 1024 * 1024,
+        vga_memory_size: 16 * 1024 * 1024,
+        screen_container: document.getElementById("screen_container"),
+        bios: {
+            url: "./bios/seabios.bin",
+        },
+        vga_bios: {
+            url: "./bios/vgabios.bin",
+        },
+        cdrom: {
+            url: "./images/rootfs.iso9660.0207_1215.iso",
+        },
+        filesystem: {},
+        autostart: true,
+    });
+    
+    
+    
+    
+     function format_timestamp(time)
+    {
+        if(time < 60)
+        {
+            return time + "s";
+        }
+        else if(time < 3600)
+        {
+            return (time / 60 | 0) + "m " + v86util.pad0(time % 60, 2) + "s";
+        }
+        else
+        {
+            return (time / 3600 | 0) + "h " +
+                v86util.pad0((time / 60 | 0) % 60, 2) + "m " +
+                v86util.pad0(time % 60, 2) + "s";
+        }
+    }
+    
+        var last_tick = 0;
+        var running_time = 0;
+        var last_instr_counter = 0;
+        var interval = null;
+        var os_uses_mouse = false;
+        var total_instructions = 0;
+
+        function update_info()
+        {
+            var now = Date.now();
+
+            var instruction_counter = emulator.get_instruction_counter();
+
+            if(instruction_counter < last_instr_counter)
+            {
+                // 32-bit wrap-around
+                last_instr_counter -= 0x100000000;
+            }
+
+            var last_ips = instruction_counter - last_instr_counter;
+            last_instr_counter = instruction_counter;
+            total_instructions += last_ips;
+
+            var delta_time = now - last_tick;
+            running_time += delta_time;
+            last_tick = now;
+
+            document.getElementById("speed").textContent = (last_ips / 1000 / delta_time).toFixed(1);
+            document.getElementById("avg_speed").textContent = (total_instructions / 1000 / running_time).toFixed(1);
+            document.getElementById("running_time").textContent = format_timestamp(running_time / 1000 | 0);
+        }
+
+        emulator.add_listener("emulator-started", function()
+        {
+            last_tick = Date.now();
+            interval = setInterval(update_info, 1000);
+        });
+
+        emulator.add_listener("emulator-stopped", function()
+        {
+            update_info();
+            if(interval !== null)
+            {
+                clearInterval(interval);
+            }
+        });
+
+        var stats_9p = {
+            read: 0,
+            write: 0,
+            files: [],
+        };
+
+        emulator.add_listener("9p-read-start", function(args)
+        {
+            const file = args[0];
+            stats_9p.files.push(file);
+            document.getElementById("info_filesystem").style.display = "block";
+            document.getElementById("info_filesystem_status").textContent = "Loading ...";
+            document.getElementById("info_filesystem_last_file").textContent = file;
+        });
+        emulator.add_listener("9p-read-end", function(args)
+        {
+            stats_9p.read += args[1];
+            document.getElementById("info_filesystem_bytes_read").textContent = stats_9p.read;
+
+            const file = args[0];
+            stats_9p.files = stats_9p.files.filter(f => f !== file);
+
+            if(stats_9p.files[0])
+            {
+                document.getElementById("info_filesystem_last_file").textContent = stats_9p.files[0];
+            }
+            else
+            {
+                document.getElementById("info_filesystem_status").textContent = "Idle";
+            }
+        });
+        emulator.add_listener("9p-write-end", function(args)
+        {
+            stats_9p.write += args[1];
+            document.getElementById("info_filesystem_bytes_written").textContent = stats_9p.write;
+
+            if(!stats_9p.files[0])
+            {
+                document.getElementById("info_filesystem_last_file").textContent = args[0];
+            }
+        });
+
+        var stats_storage = {
+            read: 0,
+            read_sectors: 0,
+            write: 0,
+            write_sectors: 0,
+        };
+
+        emulator.add_listener("ide-read-start", function()
+        {
+            document.getElementById("info_storage").style.display = "block";
+            document.getElementById("info_storage_status").textContent = "Loading ...";
+        });
+        emulator.add_listener("ide-read-end", function(args)
+        {
+            stats_storage.read += args[1];
+            stats_storage.read_sectors += args[2];
+
+            document.getElementById("info_storage_status").textContent = "Idle";
+            document.getElementById("info_storage_bytes_read").textContent = stats_storage.read;
+            document.getElementById("info_storage_sectors_read").textContent = stats_storage.read_sectors;
+        });
+        emulator.add_listener("ide-write-end", function(args)
+        {
+            stats_storage.write += args[1];
+            stats_storage.write_sectors += args[2];
+
+            document.getElementById("info_storage_bytes_written").textContent = stats_storage.write;
+            document.getElementById("info_storage_sectors_written").textContent = stats_storage.write_sectors;
+        });
+        
+}
+
+
+</script>
+
+ 
+</html>
+
+
+ 
