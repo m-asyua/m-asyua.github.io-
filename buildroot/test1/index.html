@@ -56,9 +56,9 @@
 
 
 
-<script src="./build/lib.js"></script>
-<script src="./build/lib2.js"></script>
-<script src="./build/libv86.js"></script>
+<script src="build/lib.js"></script>
+<script src="build/lib2.js"></script>
+<script src="build/libv86.js"></script>
 
 <script>
 //"use strict";
@@ -120,18 +120,18 @@ window.onload = function()
 
 
     emulator = window.emulator = new V86Starter({
-        wasm_path: "./build/v86.wasm",
+        wasm_path: "build/v86.wasm",
         memory_size: 128 * 1024 * 1024,
         vga_memory_size: 16 * 1024 * 1024,
         screen_container: document.getElementById("screen_container"),
         bios: {
-            url: "./bios/seabios.bin",
+            url: "bios/seabios.bin",
         },
         vga_bios: {
-            url: "./bios/vgabios.bin",
+            url: "bios/vgabios.bin",
         },
         cdrom: {
-            url: "./images/rootfs.iso9660.0207_1215.iso",
+            url: "images/rootfs.iso9660.0207_1215.iso",
         },
         filesystem: {},
         autostart: true,
