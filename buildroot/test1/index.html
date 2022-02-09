@@ -1,37 +1,63 @@
 <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Buildroot x86 Emulator</title>
+<link rel="stylesheet" href="v86_xterm3.css">
+</head>
 
-<title>Emulator</title>
-  <pre  id="loading"></pre><br>--<br>
-  
-  
-<div id="screen_container">
-    <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
-    <canvas style="display: none"></canvas>
-</div>
+<body>
+
+
+
 
 <table border="1">
 <tr>
 <td>
-<label> 
-     Send files to emulator<br> 
-     <input type="file" id="filesystem_send_file" multiple> 
- </label> 
+Scale:<input type="number" min="0.25" step="0.25" value="1.0" id="scale" style="width: 80px">
+</td>
+<td>
+    <label> 
+    Send files to emulator<br> 
+    <input type="file" id="filesystem_send_file" multiple> 
+    </label> 
 </td><td>
- <label> 
-     Get file from emulator<br> 
-     <input type="text" id="filesystem_get_file" placeholder="Absolute path"> 
- </label> 
- </td>
- </tr>
+    <label> 
+    Get file from emulator<br> 
+    <input type="text" id="filesystem_get_file" placeholder="Absolute path"> 
+    </label> 
+</td>
+</tr>
 </table>
 
-   <div id="runtime_infos" >
-     <br>
-     Running: <span id="running_time">0s</span> <br>
-     Speed: <span id="speed">0</span> mIPS<br>
-     Avg speed: <span id="avg_speed">0</span> mIPS<br>
-     <br>
-   </div>
+
+
+    <br>
+    <pre  id="loading"></pre>
+    <br>
+
+<div id="screen_container" >
+    <div id="screen" style="white-space: pre; font: 14px monospace; line-height: 14px">
+    <canvas id="vga"></canvas>
+    </div>
+    <div style="width: 0; height: 0; resize: none; position: absolute; opacity: 0; left: -9999em; top: 0; z-index: -10; white-space: nowrap;" >
+    <textarea class="phone_keyboard" ></textarea>
+    </div>
+</div>
+
+<br>
+
+
+<br>
+
+
+
+    <div id="runtime_infos" >
+        Running: <span id="running_time">0s</span> <br>
+        Speed: <span id="speed">0</span> mIPS<br>
+        Avg speed: <span id="avg_speed">0</span> mIPS<br>
+        <br>
+    </div>
 
     <div id="info_storage" >
         <b>IDE device (HDA or CDROM)</b><br>
@@ -52,54 +78,91 @@
         <br>
     </div>
 
+    <div id="terminal"></div> 
 
+</body>
 
-<div id="terminal"></div>
-
-
-
-<script src="./build/lib.js"></script>
-<script src="./build/lib2.js"></script>
-<script src="./build/libv86.js"></script>
-
+<script src="./build/lib.js"    ></script>
+<script src="./build/lib2.js"   ></script>
+<script src="./build/libv86.js" ></script>
 <script>
 //"use strict";
 
+    function $(id)
+    {
+        return document.getElementById(id);
+    }
 
-let f1=document.getElementById("filesystem_send_file");
-f1.addEventListener('change', function() 
+
+    $("scale").onchange = function()
+    {
+        var n = parseFloat(this.value);
+
+        if(n || n > 0)
+        {
+            emulator.screen_set_scale(n, n);
+        }
+    };
+
+
+     $("screen_container").onclick = function()
+        {
+                // allow text selection
+                if(window.getSelection().isCollapsed)
+                {
+                    let phone_keyboard = document.getElementsByClassName("phone_keyboard")[0];
+
+                    // stop mobile browser from scrolling into view when the keyboard is shown
+                    phone_keyboard.style.top = document.body.scrollTop + 100 + "px";
+                    phone_keyboard.style.left = document.body.scrollLeft + 100 + "px";
+
+                    phone_keyboard.focus();
+//                     $("screen_container").focus();
+                }
+               
+                     phone_keyboard.focus();
+//                     $("screen_container").focus();
+        };
+
+
+        const phone_keyboard = document.getElementsByClassName("phone_keyboard")[0];
+
+        phone_keyboard.setAttribute("autocorrect", "off");
+        phone_keyboard.setAttribute("autocapitalize", "off");
+        phone_keyboard.setAttribute("spellcheck", "false");
+        phone_keyboard.tabIndex = 0;
+
+        
+        $("screen_container").addEventListener("mousedown", (e) =>
+        {
+            e.preventDefault();
+            phone_keyboard.focus();
+//            $("screen_container").focus();
+        }, false);
+
+
+
+$("filesystem_send_file").addEventListener('change', function() 
  { 
- console.log("1");
      Array.prototype.forEach.call(this.files, function(file) 
      { 
- console.log("2");
          var loader = new v86util.SyncFileBuffer(file); 
          loader.onload = function() 
          { 
- console.log("3");
              loader.get_buffer(function(buffer) 
              { 
- console.log("31,"+file.name);
                  emulator.create_file("/" + file.name, new Uint8Array(buffer)); 
- console.log("33");
              }); 
          }; 
- console.log("4");
          loader.load(); 
      }, this); 
-
- console.log("5");
-  
      this.value = ""; 
      this.blur(); 
-
- console.log("6");
 
  }); 
   
   
-let f2= document.getElementById("filesystem_get_file");
-f2.addEventListener('keypress', function(e) 
+$("filesystem_get_file").addEventListener('keypress', function(e) 
  { 
      if(e.which !== 13) 
      { 
@@ -131,14 +194,16 @@ f2.addEventListener('keypress', function(e)
 var emulator;
 window.onload = function()
 {
-
-
+    const script = document.createElement("script");
+    script.src = "build/xterm.js";
+    script.async = true;
+    document.body.appendChild(script);
 
     emulator = window.emulator = new V86Starter({
         wasm_path: "./build/v86.wasm",
         memory_size: 128 * 1024 * 1024,
         vga_memory_size: 16 * 1024 * 1024,
-        screen_container: document.getElementById("screen_container"),
+        screen_container: $("screen_container"),
         bios: {
             url: "./bios/seabios.bin",
         },
@@ -148,13 +213,14 @@ window.onload = function()
         cdrom: {
             url: "./images/rootfs.iso9660.0207_1215.iso",
         },
+        serial_container_xtermjs: $("terminal"),
         filesystem: {},
+        cmdline: "tsc=reliable mitigations=off random.trust_cpu=on",
         autostart: true,
     });
-    
-    
-    
-        function chr_repeat(chr, count)
+
+
+    function chr_repeat(chr, count)
     {
         var result = "";
 
@@ -165,9 +231,9 @@ window.onload = function()
 
         return result;
     }
-    
-    
-        var progress_ticks = 0;
+
+
+    var progress_ticks = 0;
 
     function show_progress(e)
     {
@@ -214,23 +280,15 @@ window.onload = function()
         el.textContent = line;
     }
 
-    function $(id)
+
+
+    emulator.add_listener("download-progress", function(e)
     {
-        return document.getElementById(id);
-    }
-    
-    
-    
-    
-    
-    
-         emulator.add_listener("download-progress", function(e)
-        {
-            show_progress(e);
-        });
-        
-    
-     function format_timestamp(time)
+       show_progress(e);
+    });
+
+
+    function format_timestamp(time)
     {
         if(time < 60)
         {
@@ -247,13 +305,17 @@ window.onload = function()
                 v86util.pad0(time % 60, 2) + "s";
         }
     }
-    
+
+
+
         var last_tick = 0;
         var running_time = 0;
         var last_instr_counter = 0;
         var interval = null;
         var os_uses_mouse = false;
         var total_instructions = 0;
+
+
 
         function update_info()
         {
@@ -275,9 +337,9 @@ window.onload = function()
             running_time += delta_time;
             last_tick = now;
 
-            document.getElementById("speed").textContent = (last_ips / 1000 / delta_time).toFixed(1);
-            document.getElementById("avg_speed").textContent = (total_instructions / 1000 / running_time).toFixed(1);
-            document.getElementById("running_time").textContent = format_timestamp(running_time / 1000 | 0);
+            $("speed").textContent = (last_ips / 1000 / delta_time).toFixed(1);
+            $("avg_speed").textContent = (total_instructions / 1000 / running_time).toFixed(1);
+            $("running_time").textContent = format_timestamp(running_time / 1000 | 0);
         }
 
         emulator.add_listener("emulator-started", function()
@@ -305,35 +367,35 @@ window.onload = function()
         {
             const file = args[0];
             stats_9p.files.push(file);
-            document.getElementById("info_filesystem").style.display = "block";
-            document.getElementById("info_filesystem_status").textContent = "Loading ...";
-            document.getElementById("info_filesystem_last_file").textContent = file;
+            $("info_filesystem").style.display = "block";
+            $("info_filesystem_status").textContent = "Loading ...";
+            $("info_filesystem_last_file").textContent = file;
         });
         emulator.add_listener("9p-read-end", function(args)
         {
             stats_9p.read += args[1];
-            document.getElementById("info_filesystem_bytes_read").textContent = stats_9p.read;
+            $("info_filesystem_bytes_read").textContent = stats_9p.read;
 
             const file = args[0];
             stats_9p.files = stats_9p.files.filter(f => f !== file);
 
             if(stats_9p.files[0])
             {
-                document.getElementById("info_filesystem_last_file").textContent = stats_9p.files[0];
+                $("info_filesystem_last_file").textContent = stats_9p.files[0];
             }
             else
             {
-                document.getElementById("info_filesystem_status").textContent = "Idle";
+                $("info_filesystem_status").textContent = "Idle";
             }
         });
         emulator.add_listener("9p-write-end", function(args)
         {
             stats_9p.write += args[1];
-            document.getElementById("info_filesystem_bytes_written").textContent = stats_9p.write;
+            $("info_filesystem_bytes_written").textContent = stats_9p.write;
 
             if(!stats_9p.files[0])
             {
-                document.getElementById("info_filesystem_last_file").textContent = args[0];
+                $("info_filesystem_last_file").textContent = args[0];
             }
         });
 
@@ -346,35 +408,37 @@ window.onload = function()
 
         emulator.add_listener("ide-read-start", function()
         {
-            document.getElementById("info_storage").style.display = "block";
-            document.getElementById("info_storage_status").textContent = "Loading ...";
+            $("info_storage").style.display = "block";
+            $("info_storage_status").textContent = "Loading ...";
         });
         emulator.add_listener("ide-read-end", function(args)
         {
             stats_storage.read += args[1];
             stats_storage.read_sectors += args[2];
 
-            document.getElementById("info_storage_status").textContent = "Idle";
-            document.getElementById("info_storage_bytes_read").textContent = stats_storage.read;
-            document.getElementById("info_storage_sectors_read").textContent = stats_storage.read_sectors;
+            $("info_storage_status").textContent = "Idle";
+            $("info_storage_bytes_read").textContent = stats_storage.read;
+            $("info_storage_sectors_read").textContent = stats_storage.read_sectors;
         });
         emulator.add_listener("ide-write-end", function(args)
         {
             stats_storage.write += args[1];
             stats_storage.write_sectors += args[2];
 
-            document.getElementById("info_storage_bytes_written").textContent = stats_storage.write;
-            document.getElementById("info_storage_sectors_written").textContent = stats_storage.write_sectors;
+            $("info_storage_bytes_written").textContent = stats_storage.write;
+            $("info_storage_sectors_written").textContent = stats_storage.write_sectors;
         });
         
         
 }
 
 
+
+
+
+
 </script>
 
- 
 </html>
-
 
  
