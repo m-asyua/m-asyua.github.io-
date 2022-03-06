@@ -8,7 +8,8 @@
 
 環境構築までの手順
 
-<b>（１）（※PC教室環境によっては既にコピーされている場合は，飛ばして（２）に行く）</b>
+<b>（１）（※PC教室環境によっては既にコピーされている．その場合は，飛ばして（２）に行く）</b>
+
      <b>freeglutをダウンロードしてフォルダにコピーする作業</b>
      https://www.transmissionzero.co.uk/software/freeglut-devel/
      からファイルをダウンロード．
@@ -51,7 +52,7 @@
       コマンドラインで「test」を実行．
       または，「test.bat」をダブルクリックして実行．
   
-      下記のテストプログラムが実行されればOK．
+      下記の画面が表示されていればOK．
       「消しゴム」の画像が「w」「a」「s」「d」のキーを押すと移動します．また「x」キーを押すと，消しゴム発射．
 
 </pre>
@@ -82,38 +83,45 @@
 ーーーー
 以降，リファレンスマニュアル
 
+点の表示
 void point(int x,int y,float size)
     x座標，y座標のところにサイズsizeの大きさの点を表示
     例　point( 50, 50,  5);
     x座標50，y座標50のところにサイズ5の大きさの点を表示
 
+線の表示
 void line(double x1, double y1, double x2, double y2, double size)
     座標（x1, y1)から座標(x2, y2)に線を引く．sizeは線の太さ．
     例 line(50, 100, 300, 100,  5);
     座標（50, 100)から座標(300, 100)に線を引く．線の太さは5．
 　　　
+四角形の表示
 void rect(int x1,int y1,int x2, int y2,char *ColorName)
     座標（x1, y1)から座標(x2, y2)で囲まれた四角形を，"black"または"white"の色で塗りつぶす
 
     例 rect(280,  220, 320, 270,"black");
     座標（280, 220)から座標(320, 270)で囲まれた四角形を，"black"(黒)の色で塗りつぶす
 
+文字の表示
 void text(char* str,int x, int y)
     strの文字を，座標(x,y)のところに表示する
     例 text("test1",  50, 200);
     test1という文字を，座標(50, 200)のところの描画 
 
+bmp画像(24bit)の表示
 void imageBmp(char *FileName, int x, int y, int width, int height)
 　　bmpファイルを，座標(x,y)を左上にして，幅width, 高さheightで表示する．
 　　※使用できるBmpファイルは 「24ビット」のbmpファイルのみ
     例 imageBmp("test_24bit.bmp", 400, 50, 30,80);
 　　ファイル名「test_24bit.bmp」を，座標(400,50)を左上にして，幅30, 高さ80で表示する．
 
+プログラムの一時停止
 void delay(int time)
      time(ミリ秒)の間，プログラムを停止する
      例　delay(200);
      200ミリ秒（0.2秒）の間，プログラムを停止する
 
+キーの入力
 ※KeyDownについて
 void KeyDown(unsigned char key){
 // キーが押されると，ここの部分が呼び出される．
@@ -139,6 +147,8 @@ void KeyDown(unsigned char key){
 ・#include "sit.h"と，KeyDown..{}のところを必ず作る．
 ・void sit_main(){...}の中に，pointやlineなどを書くと，それが実行される．
 
+
+座標について
 
 
 
