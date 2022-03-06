@@ -1,12 +1,14 @@
 <html>
-     
+
+     <body bgcolor="#dddddd">
+          
 <pre>
 
 <b>SIT-GL: 授業用のOpenGLを使った簡易グラフィックライブラリ（windows g++/MinGW用）</b>
 
 環境構築までの手順
 
-<b>（１）freeglutをダウンロードしてフォルダにコピー（PC教室環境によっては既にコピーされている）</b>
+<b>（１）freeglutをダウンロードしてフォルダにコピー（※PC教室環境によっては既にコピーされている）</b>
      https://www.transmissionzero.co.uk/software/freeglut-devel/
      からファイルをダウンロード．
      https://tana-laevatein.hatenadiary.org/entry/20091227/1261942906
@@ -26,14 +28,14 @@
      コマンドプロンプトを使い，解凍したフォルダに移動
      「gcc2」と入力してみる．
      
-     ・「コマンドがない」のエラーの場合．
+     ・下記の「コマンドがない」のエラーの場合．
         gcc/g++の環境が使えないようなので，パス（環境変数）などを確認して，gcc/g++を使えるようにする．
 </pre>
 
 <img width="406" alt="cmd_err1" src="https://user-images.githubusercontent.com/83494645/156915507-3ea926ff-bc3d-44ea-88fb-6b5023119a8a.png"><br>
      
 <pre>
-　   ・「ファイルがない」のエラーの場合．
+　   ・下記のmingw32のエラーの場合．
         g++が動作しているので，これでよい（次に行く）
 </pre>
      
@@ -49,12 +51,12 @@
       コマンドラインで「test」を実行．
       または，「test.bat」をダブルクリックして実行．
   
-      下記のようなテストプログラムが実行されればOK．
+      下記のテストプログラムが実行されればOK．
       「w」「a」「s」「d」のキーで「消しゴム」の画像が移動します．「X」キーを押すと，消しゴム発射．
 
 </pre>
      
-<img src="https://user-images.githubusercontent.com/83494645/156915541-d9fb942e-48af-4c54-aa09-e3420523deb1.gif" width="400">     
+<img src="https://user-images.githubusercontent.com/83494645/156915541-d9fb942e-48af-4c54-aa09-e3420523deb1.gif" width="500">     
 
 
 
@@ -73,35 +75,28 @@
 
 >test1
 
+下記のように黒い点が表示される
 <img width="187" alt="point_test" src="https://user-images.githubusercontent.com/83494645/156915527-804dfd35-511b-4368-b3fb-1a966332f46d.png">
 
 
 ーーーー
 以降，リファレンスマニュアル
 
-point()
+point(int x, int y);
 
-line()
+line(int x1, int y1, int x2, int y2);
 
-rect()
+rect(int x, int y, int width, int height);
 
-text()
+text(char str, int x, int y);
 
-imageBMP()
-24ビットのみ
+imageBMP(char str, int x, int y,  int width, int height);
+Bmpファイルは 24ビットのみ
 
-delay()
+delay(int time);
 
-KeyDownについて
-コールバック関数になっている
-
-
-
-
-
-
-
-
+※KeyDownについて
+コールバック関数になっている．
 
 
 
