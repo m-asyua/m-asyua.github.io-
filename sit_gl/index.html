@@ -82,21 +82,66 @@
 ーーーー
 以降，リファレンスマニュアル
 
-point(int x, int y);
+void point(int x,int y,float size)
+     x座標，y座標のところにサイズsizeの大きさの点を表示
+     例　point( 50, 50,  5);
+     x座標50，y座標50のところにサイズ5の大きさの点を表示
 
-line(int x1, int y1, int x2, int y2);
+void line(double x1, double y1, double x2, double y2, double size)
+例
+	line(50, 100, 300, 100,  5);
+     
 
-rect(int x, int y, int width, int height);
+void rect(int x1,int y1,int x2, int y2,char *ColorName)
 
-text(char str, int x, int y);
+例
 
-imageBMP(char str, int x, int y,  int width, int height);
+	rect(280,  220, 280+50, 220+50,"black");
+	rect(290,  230, 290+30, 230+30,"white");
+
+
+
+
+
+
+
+
+void text(char* str,int x, int y)
+
+例
+
+	text("test1",  50, 200);
+     
+
+void imageBmp(char *FileName, int x, int y, int width, int height)
 Bmpファイルは 24ビットのみ
+
+
+例
+
+	imageBmp("test_24bit.bmp", 400, 50, 30,80);
+     
+     
 
 delay(int time);
 
+例
+
 ※KeyDownについて
 コールバック関数になっている．
+
+void KeyDown(unsigned char);
+
+#include "sit.h"
+
+void sit_main(){
+
+	point( 50, 50,  5);
+
+}
+
+void KeyDown(unsigned char){
+}
 
 
 
