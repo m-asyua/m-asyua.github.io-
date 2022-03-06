@@ -8,7 +8,8 @@
 
 環境構築までの手順
 
-<b>（１）freeglutをダウンロードしてフォルダにコピー（※PC教室環境によっては既にコピーされている）</b>
+<b>（１）（※PC教室環境によっては既にコピーされている場合は，飛ばして（２）に行く）</b>
+     <b>freeglutをダウンロードしてフォルダにコピーする作業</b>
      https://www.transmissionzero.co.uk/software/freeglut-devel/
      からファイルをダウンロード．
      https://tana-laevatein.hatenadiary.org/entry/20091227/1261942906
@@ -25,18 +26,17 @@
      ダウンロード後，解凍（展開）する．
 
 <b>（３）freeglutでのコンパイルが可能かのテストする</b>
-     コマンドプロンプトを使い，解凍したフォルダに移動
-     「gcc2」と入力してみる．
+     コマンドプロンプトを使い，解凍したフォルダに移動する，そのフォルダ内で「gcc2」と入力する．
      
-     ・下記の「コマンドがない」のエラーの場合．
+     ・下記の「コマンドがない」といったエラーが出る場合．
         gcc/g++の環境が使えないようなので，パス（環境変数）などを確認して，gcc/g++を使えるようにする．
 </pre>
 
 <img width="406" alt="cmd_err1" src="https://user-images.githubusercontent.com/83494645/156915507-3ea926ff-bc3d-44ea-88fb-6b5023119a8a.png"><br>
      
 <pre>
-　   ・下記のmingw32のエラーの場合．
-        g++が動作しているので，これでよい（次に行く）
+　   ・下記のmingwに関連したエラーの場合（エラーメッセージにmingwなどの文字がある場合）．
+        g++が動作しているようなので，まずは，これでよい（次の（４）に行く）
 </pre>
      
 
@@ -52,7 +52,7 @@
       または，「test.bat」をダブルクリックして実行．
   
       下記のテストプログラムが実行されればOK．
-      「w」「a」「s」「d」のキーで「消しゴム」の画像が移動します．「X」キーを押すと，消しゴム発射．
+      「消しゴム」の画像が「w」「a」「s」「d」のキーを押すと移動します．また「x」キーを押すと，消しゴム発射．
 
 </pre>
      
@@ -69,13 +69,13 @@
 
 
 ーーーー
-点の表示のみのサンプルプログラムのコンパイルと実行．
+※点を表示するサンプルプログラムのコンパイルと実行．
 
 >gcc2 test1.c -o test1
+でコンパイル（gcc2，と入力する）
 
 >test1
-
-下記のように黒い点が表示される
+で実行すると，下記のように黒い点が表示される
 <img width="187" alt="point_test" src="https://user-images.githubusercontent.com/83494645/156915527-804dfd35-511b-4368-b3fb-1a966332f46d.png">
 
 
@@ -83,55 +83,47 @@
 以降，リファレンスマニュアル
 
 void point(int x,int y,float size)
-     x座標，y座標のところにサイズsizeの大きさの点を表示
-     例　point( 50, 50,  5);
-     x座標50，y座標50のところにサイズ5の大きさの点を表示
+    x座標，y座標のところにサイズsizeの大きさの点を表示
+    例　point( 50, 50,  5);
+    x座標50，y座標50のところにサイズ5の大きさの点を表示
 
 void line(double x1, double y1, double x2, double y2, double size)
-例
-	line(50, 100, 300, 100,  5);
-     
-
+    座標（x1, y1)から座標(x2, y2)に線を引く．sizeは線の太さ．
+    例 line(50, 100, 300, 100,  5);
+    座標（50, 100)から座標(300, 100)に線を引く．線の太さは5．
+　　　
 void rect(int x1,int y1,int x2, int y2,char *ColorName)
+    座標（x1, y1)から座標(x2, y2)で囲まれた四角形を，"black"または"white"の色で塗りつぶす
 
-例
-
-	rect(280,  220, 280+50, 220+50,"black");
-	rect(290,  230, 290+30, 230+30,"white");
-
-
-
-
-
-
-
+    例 rect(280,  220, 320, 270,"black");
+    座標（280, 220)から座標(320, 270)で囲まれた四角形を，"black"(黒)の色で塗りつぶす
 
 void text(char* str,int x, int y)
-
-例
-
-	text("test1",  50, 200);
-     
+    strの文字を，座標(x,y)のところに表示する
+    例 text("test1",  50, 200);
+    test1という文字を，座標(50, 200)のところの描画 
 
 void imageBmp(char *FileName, int x, int y, int width, int height)
-Bmpファイルは 24ビットのみ
+　　bmpファイルを，座標(x,y)を左上にして，幅width, 高さheightで表示する．
+　　※使用できるBmpファイルは 「24ビット」のbmpファイルのみ
+    例 imageBmp("test_24bit.bmp", 400, 50, 30,80);
+　　ファイル名「test_24bit.bmp」を，座標(400,50)を左上にして，幅30, 高さ80で表示する．
 
-
-例
-
-	imageBmp("test_24bit.bmp", 400, 50, 30,80);
-     
-     
-
-delay(int time);
-
-例
+void delay(int time)
+     time(ミリ秒)の間，プログラムを停止する
+     例　delay(200);
+     200ミリ秒（0.2秒）の間，プログラムを停止する
 
 ※KeyDownについて
-コールバック関数になっている．
+void KeyDown(unsigned char key){
+// キーが押されると，ここの部分が呼び出される．
+// keyには押された文字が入っている．
+}
 
-void KeyDown(unsigned char);
 
+
+プログラムの，「ひな形」は下記
+-------------------
 #include "sit.h"
 
 void sit_main(){
@@ -140,8 +132,14 @@ void sit_main(){
 
 }
 
-void KeyDown(unsigned char){
+void KeyDown(unsigned char key){
+
 }
+-------------------
+・#include "sit.h"と，KeyDown..{}のところを必ず作る．
+・void sit_main(){...}の中に，pointやlineなどを書くと，それが実行される．
+
+
 
 
 
