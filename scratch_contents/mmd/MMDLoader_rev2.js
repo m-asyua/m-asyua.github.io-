@@ -66,7 +66,7 @@
    * @param {function} onError
    */
 		
-		
+		/*
 		function _getParser() {
 
 			if ( this.parser === null ) {
@@ -84,14 +84,14 @@
 			return this.parser;
 
 		}
-		
+*/		
 		load( url, onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
 			
 			
-			var parser = this._getParser();
+			var parser = new MMDParser.Parser();// this._getParser();
 			
 			
 			
