@@ -28,7 +28,7 @@
  *  - more precise grant skinning support.
  *  - shadow support.
  */
-
+/*
 import {
 	AddOperation,
 	AnimationClip,
@@ -64,6 +64,7 @@ import {
 } from "../../../build/three.module.js";
 import { TGALoader } from "../loaders/TGALoader.js";
 import { MMDParser } from "../libs/mmdparser.module.js";
+*/
 
 var MMDLoader = ( function () {
 
