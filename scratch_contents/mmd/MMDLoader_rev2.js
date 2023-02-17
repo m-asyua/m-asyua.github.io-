@@ -67,7 +67,7 @@
    */
 		
 		
-		_getParser: function () {
+		function _getParser() {
 
 			if ( this.parser === null ) {
 
