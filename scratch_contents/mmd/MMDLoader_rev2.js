@@ -72,6 +72,35 @@
 			// resource path
 
 			let resourcePath;
+			
+    		if (url["modelFile"] instanceof Blob){
+
+				var reader = new FileReader(); 
+
+				reader.readAsArrayBuffer(url["modelFile"]);
+
+				reader.onload = function(e){
+
+					var buffer = e.target.result
+					if(url["modelExtension"] == "pmd") {
+
+						var data = parser.parsePmd( buffer, true )
+						onLoad(	builder.build( data, resourcePath, onProgress, onError )	);
+
+					} else if(url["modelExtension"] == "pmx") {
+
+						var data = parser.parsePmx( buffer, true )
+						onLoad(	builder.build( data, resourcePath, onProgress, onError )	);
+
+					} else {
+
+						console.log("This type of model file is not supported.")
+
+					}
+				}
+
+	} else {
+			
 			if ( this.resourcePath !== '' ) {
 
 				resourcePath = this.resourcePath;
@@ -85,7 +114,7 @@
 				resourcePath = THREE.LoaderUtils.extractUrlBase( url );
 
 			}
-
+                
 			const modelExtension = this._extractExtension( url ).toLowerCase();
 
 			// Should I detect by seeing header?
@@ -102,6 +131,11 @@
 
 			}, onProgress, onError );
 
+			
+			
+			
+		   }
+			
 		}
 
 		/**
