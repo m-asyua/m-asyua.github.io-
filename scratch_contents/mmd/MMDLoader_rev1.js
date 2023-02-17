@@ -2055,4 +2055,4 @@ var MMDLoader = ( function () {
 
 } )();
 
-export { MMDLoader };
+//export { MMDLoader };
