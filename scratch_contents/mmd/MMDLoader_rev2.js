@@ -65,10 +65,36 @@
    * @param {function} onProgress
    * @param {function} onError
    */
+		
+		
+		_getParser: function () {
+
+			if ( this.parser === null ) {
+
+				if ( typeof MMDParser === 'undefined' ) {
+
+					throw new Error( 'THREE.MMDLoader: Import MMDParser https://github.com/takahirox/mmd-parser' );
+
+				}
+
+				this.parser = new MMDParser.Parser();
+
+			}
+
+			return this.parser;
+
+		}
+		
 		load( url, onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
+			
+			
+			var parser = this._getParser();
+			
+			
+			
 			// resource path
 
 			let resourcePath;
