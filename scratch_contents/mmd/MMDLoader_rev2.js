@@ -1276,7 +1276,15 @@ console.log("MMDLoader_rev2:",fullPath);
 
 			}
 
+			console.log(fullPath);
+			console.log(this);
+			console.log(this.blob_array);
+			
+			
+			
+			
 			fullPath = this.blob_array[fullPath];
+			
 			const texture = loader.load( fullPath, function ( t ) {
 
 				console.log("MMDLoader_rev2: change here",fullPath);
