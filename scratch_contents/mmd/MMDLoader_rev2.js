@@ -147,7 +147,7 @@
 				
 				console.log("MMDLoader_blob_array",   b_array);
 				
-				this.blob_array = b_array();
+				this.blob_array = b_array;
 				
 				
 				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
