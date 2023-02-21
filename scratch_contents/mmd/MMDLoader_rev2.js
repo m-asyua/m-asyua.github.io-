@@ -153,6 +153,8 @@
 						return Array.apply(null,a);
 				}
 				
+				b_tmp.meshBuilder.convey(b_array)
+				
 				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
 
 			}, onProgress, onError );
@@ -347,7 +349,7 @@
 			this.crossOrigin = 'anonymous';
 			this.geometryBuilder = new GeometryBuilder();
 			this.materialBuilder = new MaterialBuilder( manager );
-
+	this.b_array = new Array(); //add
 		}
 
 		/**
@@ -368,10 +370,19 @@
    * @param {function} onError
    * @return {SkinnedMesh}
    */
+		convey(b_array){
+			this.b_array = b_array;
+	console.log("mesh builder" , this, b_array);
+
+		}
 		build( data, resourcePath, onProgress, onError ) {
 
 			const geometry = this.geometryBuilder.build( data );
+
 			const material = this.materialBuilder.setCrossOrigin( this.crossOrigin ).setResourcePath( resourcePath ).build( data, geometry, onProgress, onError );
+		this.materialBuilder.convey(this.b_array);
+			
+			
 			const mesh = new THREE.SkinnedMesh( geometry, material );
 			const skeleton = new THREE.Skeleton( initBones( mesh ) );
 			mesh.bind( skeleton );
@@ -960,12 +971,20 @@
 			this.crossOrigin = 'anonymous';
 			this.resourcePath = undefined;
 
+			this.b_array = new Array();
 		}
 
 		/**
    * @param {string} crossOrigin
    * @return {MaterialBuilder}
    */
+		
+		convey(b_array){
+			this.b_array= b_array;
+			console.log("meterial builder" , this, b_array);
+		}
+
+		
 		setCrossOrigin( crossOrigin ) {
 
 			this.crossOrigin = crossOrigin;
@@ -1278,12 +1297,12 @@ console.log("MMDLoader_rev2:",fullPath);
 
 			console.log(fullPath);
 			console.log(this);
-			console.log(this.blob_array);
+			console.log(this.b_array);
 			
 			
 			
 			
-			fullPath = this.blob_array[fullPath];
+			fullPath = this.b_array[fullPath];
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
