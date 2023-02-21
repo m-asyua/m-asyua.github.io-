@@ -42,6 +42,8 @@
 			this.meshBuilder = new MeshBuilder( this.manager );
 			this.animationBuilder = new AnimationBuilder();
 
+	this.blob_array = new Array();   ///    new
+
 		}
 
 		/**
@@ -108,7 +110,7 @@
 		}
 
 
-		load2( url, blob_array, onLoad, onProgress, onError ) {
+		load2( url, b_array, onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
@@ -143,7 +145,10 @@
 			this[  'loadPMX' ]( url, function ( data ) {
 
 				
-				console.log("MMDLoader_blob_array",   blob_array);
+				console.log("MMDLoader_blob_array",   b_array);
+				
+				this.blob_array = b_array();
+				
 				
 				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
 
@@ -1272,7 +1277,7 @@ console.log("MMDLoader_rev2:",fullPath);
 
 				console.log("MMDLoader_rev2: change here",fullPath);
 			
-			let t = b_array[fullPath];
+			let t = this.blob_array[fullPath];
 			
 				// MMD toon texture is Axis-Y oriented
 				// but Three.js gradient map is Axis-X oriented.
