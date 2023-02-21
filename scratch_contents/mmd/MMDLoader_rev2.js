@@ -1276,11 +1276,11 @@ console.log("MMDLoader_rev2:",fullPath);
 
 			}
 
-			//const texture = loader.load( fullPath, function ( t ) {
+			fullPath = this.blob_array[fullPath];
+			const texture = loader.load( fullPath, function ( t ) {
 
 				console.log("MMDLoader_rev2: change here",fullPath);
 			
-			let t = this.blob_array[fullPath];
 			
 				// MMD toon texture is Axis-Y oriented
 				// but Three.js gradient map is Axis-X oriented.
@@ -1296,15 +1296,15 @@ console.log("MMDLoader_rev2:",fullPath);
 				t.flipY = false;
 				t.wrapS = THREE.RepeatWrapping;
 				t.wrapT = THREE.RepeatWrapping;
-			//	for ( let i = 0; i < texture.readyCallbacks.length; i ++ ) {
+				for ( let i = 0; i < texture.readyCallbacks.length; i ++ ) {
 
-			//		texture.readyCallbacks[ i ]( texture );
+					texture.readyCallbacks[ i ]( texture );
 
-			//	}
+				}
 
-			//	delete texture.readyCallbacks;
+				delete texture.readyCallbacks;
 
-			//}, onProgress, onError );
+			}, onProgress, onError );
 			
 			
 			texture.readyCallbacks = [];
