@@ -1305,8 +1305,9 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			
 			
 			
-			
+		if(this.b_array.length>0){	
 			fullPath = this.b_array[filePath];
+		}
 			console.log("ff",fullPath);
 
 			
