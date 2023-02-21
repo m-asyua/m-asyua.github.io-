@@ -65,7 +65,7 @@
    * @param {function} onProgress
    * @param {function} onError
    */
-		load( url, blob_array onLoad, onProgress, onError ) {
+		load( url, blob_array, onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
