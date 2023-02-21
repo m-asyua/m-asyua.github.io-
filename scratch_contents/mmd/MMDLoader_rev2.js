@@ -373,6 +373,7 @@
 		convey(b_array){
 			this.b_array = b_array;
 	console.log("mesh builder" , this, b_array);
+			this.materialBuilder.convey(this.b_array);
 
 		}
 		build( data, resourcePath, onProgress, onError ) {
