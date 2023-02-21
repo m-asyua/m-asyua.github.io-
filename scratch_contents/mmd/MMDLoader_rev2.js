@@ -1307,6 +1307,8 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			
 			
 			fullPath = this.b_array[filePath];
+			console.log("ff",fullPath);
+
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
