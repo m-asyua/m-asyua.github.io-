@@ -141,13 +141,14 @@
 //
 //			}
 
+			let b_tmp = this;
 //			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
 			this[  'loadPMX' ]( url, function ( data ) {
 
 				
 				console.log("MMDLoader_blob_array",   b_array);
 				
-				this.blob_array = copyArray(b_array);
+				b_tmp.blob_array = copyArray(b_array);
 					function copyArray(a) {
 						return Array.apply(null,a);
 				}
