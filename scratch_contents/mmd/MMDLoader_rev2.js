@@ -65,7 +65,50 @@
    * @param {function} onProgress
    * @param {function} onError
    */
-		load( url, blob_array, onLoad, onProgress, onError ) {
+
+		load( url, onLoad, onProgress, onError ) {
+
+			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
+
+			// resource path
+
+			let resourcePath;
+			if ( this.resourcePath !== '' ) {
+
+				resourcePath = this.resourcePath;
+
+			} else if ( this.path !== '' ) {
+
+				resourcePath = this.path;
+
+			} else {
+
+				resourcePath = THREE.LoaderUtils.extractUrlBase( url );
+
+			}
+
+			const modelExtension = this._extractExtension( url ).toLowerCase();
+
+			// Should I detect by seeing header?
+			if ( modelExtension !== 'pmd' && modelExtension !== 'pmx' ) {
+
+				if ( onError ) onError( new Error( 'THREE.MMDLoader: Unknown model file extension .' + modelExtension + '.' ) );
+				return;
+
+			}
+
+			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
+
+				
+				
+				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
+
+			}, onProgress, onError );
+
+		}
+
+
+		load2( url, blob_array, onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
