@@ -65,7 +65,7 @@
    * @param {function} onProgress
    * @param {function} onError
    */
-		load( url, onLoad, onProgress, onError ) {
+		load( url, blob_array onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
@@ -99,6 +99,9 @@
 //			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
 			this[  'loadPMX' ]( url, function ( data ) {
 
+				
+				console.log("MMDLoader_blob_array",   blob_array);
+				
 				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
 
 			}, onProgress, onError );
