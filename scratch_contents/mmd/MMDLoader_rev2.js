@@ -131,7 +131,7 @@
 
 			}
 
-			const modelExtension = this._extractExtension( url ).toLowerCase();
+			let modelExtension = this._extractExtension( url ).toLowerCase();
 
 			// Should I detect by seeing header?
 //			if ( modelExtension !== 'pmd' && modelExtension !== 'pmx' ) {
@@ -142,6 +142,24 @@
 //			}
 
 			let b_tmp = this;
+			
+			for (var key in b_array){
+				console.log(key,b_array[key],url);
+				if(b_array[key] == url ){
+					
+					if(key.endsWith('.pmx')){
+						modelExtension ='pmx';
+						break;
+					} 
+					if(key.endsWith('.pmd')){
+						modelExtension ='pmd';
+						break;
+					} 
+				}
+			}
+			
+			console.log("modelExtension", modelExtension);
+			
 			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
 //			this[  'loadPMX' ]( url, function ( data ) {
 
