@@ -142,8 +142,8 @@
 //			}
 
 			let b_tmp = this;
-//			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
-			this[  'loadPMX' ]( url, function ( data ) {
+			this[ modelExtension === 'pmd' ? 'loadPMD' : 'loadPMX' ]( url, function ( data ) {
+//			this[  'loadPMX' ]( url, function ( data ) {
 
 				
 				console.log("MMDLoader_blob_array",   b_array);
