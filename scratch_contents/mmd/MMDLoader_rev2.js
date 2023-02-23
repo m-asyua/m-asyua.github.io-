@@ -390,7 +390,7 @@
    */
 		convey(b_array){
 			this.b_array = b_array;
-	console.log("mesh builder" , this, b_array);
+//	console.log("mesh builder" , this, b_array);
 			this.materialBuilder.convey(this.b_array);
 
 		}
@@ -1000,7 +1000,7 @@
 		
 		convey(b_array){
 			this.b_array= b_array;
-			console.log("meterial builder" , this, b_array);
+//			console.log("meterial builder" , this, b_array);
 		}
 
 		
@@ -1314,24 +1314,24 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 
 			}
 
-			console.log(fullPath);
+	//		console.log(fullPath);
 
-			console.log(filePath);
+	//		console.log(filePath);
 			
-			//console.log(this);
+			
 			console.log(this.b_array);
-			console.log(this.b_array.length);
+			console.log("length ",this.b_array.length);
 			
 			
 		//if(this.b_array.length>0){	
 			fullPath = this.b_array[filePath];
 		//}
-			console.log("ffGGGGGGGGGGGGGGGGGG",fullPath);
+			console.log("ffGGGGGGGGGGGGGGGGGG Load:",fullPath,filePath);
 
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
-				console.log("MMDLoader_rev2: change here",fullPath);
+				console.log("MMDLoader_rev2: change here ",fullPath);
 			
 			
 				// MMD toon texture is Axis-Y oriented
