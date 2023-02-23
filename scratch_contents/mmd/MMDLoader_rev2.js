@@ -1333,6 +1333,12 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 
 				console.log("MMDLoader_rev2: change here ",fullPath);
 			
+	for (var key in blob_array){
+		if(   this.b_array[key] == fullPath   ){
+			console.log(key);
+			break;
+		}
+	}
 			
 				// MMD toon texture is Axis-Y oriented
 				// but Three.js gradient map is Axis-X oriented.
