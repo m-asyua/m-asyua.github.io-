@@ -1327,14 +1327,14 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			fullPath = this.b_array[filePath];
 		//}
 			console.log("ffGGGGGGGGGGGGGGGGGG Load:",fullPath,filePath);
-
+let my_t =this;
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
 				console.log("MMDLoader_rev2: change here ",fullPath);
 			
-	for (var key in blob_array){
-		if(   this.b_array[key] == fullPath   ){
+	for (var key in my_t.b_array){
+		if(   my_t.b_array[key] == fullPath   ){
 			console.log(key);
 			break;
 		}
