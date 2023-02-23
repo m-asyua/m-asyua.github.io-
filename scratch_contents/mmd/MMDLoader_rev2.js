@@ -1315,28 +1315,26 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			}
 
 	//		console.log(fullPath);
-
 	//		console.log(filePath);
+						
+			// console.log(this.b_array);
 			
+			console.log("b_array length ",Object.keys(this.b_array).length); // not 'b_array.length'
+
 			
-			console.log(this.b_array);
-			console.log("length ",Object.keys(this.b_array).length); // not 'b_array.length'
-			
-			
-		if(   Object.keys(this.b_array).length>0){	// not 'b_array.length'
-			fullPath = this.b_array[filePath];
-		}
-			console.log("ffGGGGGGGGGGGGGGGGGG Load:",fullPath,filePath);
-let my_t =this;
-		
-			
-			
-			if(fullPath === undefined ){
-				console.log("UNDEF!!!",fullPath,filePath);
-			     return;
+			if(  Object.keys(this.b_array).length > 0 ){	// not 'b_array.length'
+				fullPath = this.b_array[filePath];
 			}
 			
+			console.log("file name Load:",fullPath,filePath);
+
 			
+			let my_t =this;
+			
+			if(fullPath === undefined ){
+				console.log("UNDEF! ",fullPath,filePath);
+				return;
+			}
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
