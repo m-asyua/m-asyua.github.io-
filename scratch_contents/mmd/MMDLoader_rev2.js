@@ -1331,7 +1331,7 @@ let my_t =this;
 		
 			
 			
-			if(fullPath === 'undefined' ){
+			if(fullPath === undefined ){
 				console.log("UNDEF!!!",fullPath,filePath);
 			     return;
 			}
