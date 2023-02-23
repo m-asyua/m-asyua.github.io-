@@ -1320,12 +1320,12 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			
 			
 			console.log(this.b_array);
-			console.log("length ",this.b_array.length);
+			console.log("length ",Object.keys(this.b_array).length); // not 'b_array.length'
 			
 			
-		//if(this.b_array.length>0){	
+		if(   Object.keys(this.b_array).length>0){	// not 'b_array.length'
 			fullPath = this.b_array[filePath];
-		//}
+		}
 			console.log("ffGGGGGGGGGGGGGGGGGG Load:",fullPath,filePath);
 let my_t =this;
 		
