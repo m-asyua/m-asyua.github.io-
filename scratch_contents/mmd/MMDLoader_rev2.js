@@ -1328,6 +1328,15 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 		//}
 			console.log("ffGGGGGGGGGGGGGGGGGG Load:",fullPath,filePath);
 let my_t =this;
+		
+			
+			
+			if(fullPath === 'undefined' ){
+				console.log("UNDEF!!!",fullPath,filePath);
+			     return;
+			}
+			
+			
 			
 			const texture = loader.load( fullPath, function ( t ) {
 
