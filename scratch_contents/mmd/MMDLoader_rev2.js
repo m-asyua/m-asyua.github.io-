@@ -110,7 +110,7 @@
 		}
 
 
-		load2( url, b_array, onLoad, onProgress, onError ) {
+		load2( url, b_array, message_id,     onLoad, onProgress, onError ) {
 
 			const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
@@ -171,7 +171,7 @@
 						return Array.apply(null,a);
 				}
 				
-				b_tmp.meshBuilder.convey(b_array)
+				b_tmp.meshBuilder.convey(b_array, message_id)
 				
 				onLoad( builder.build( data, resourcePath, onProgress, onError ) );
 
@@ -368,6 +368,7 @@
 			this.geometryBuilder = new GeometryBuilder();
 			this.materialBuilder = new MaterialBuilder( manager );
 	this.b_array = new Array(); //add
+	this.message_id = null;		//
 		}
 
 		/**
@@ -388,10 +389,10 @@
    * @param {function} onError
    * @return {SkinnedMesh}
    */
-		convey(b_array){
+		convey(b_array,message_id){
 			this.b_array = b_array;
 //	console.log("mesh builder" , this, b_array);
-			this.materialBuilder.convey(this.b_array);
+			this.materialBuilder.convey(this.b_array, this.message_id);
 
 		}
 		build( data, resourcePath, onProgress, onError ) {
@@ -399,7 +400,7 @@
 			const geometry = this.geometryBuilder.build( data );
 
 			const material = this.materialBuilder.setCrossOrigin( this.crossOrigin ).setResourcePath( resourcePath ).build( data, geometry, onProgress, onError );
-		this.materialBuilder.convey(this.b_array);
+		this.materialBuilder.convey(this.b_array, this_message_id);
 			
 			
 			const mesh = new THREE.SkinnedMesh( geometry, material );
@@ -991,6 +992,7 @@
 			this.resourcePath = undefined;
 
 			this.b_array = new Array();
+			this.message_id = null;
 		}
 
 		/**
@@ -998,8 +1000,9 @@
    * @return {MaterialBuilder}
    */
 		
-		convey(b_array){
+		convey(b_array, message_id){
 			this.b_array= b_array;
+			this.message_id = message_id;
 //			console.log("meterial builder" , this, b_array);
 		}
 
@@ -1336,13 +1339,38 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 				return;
 			}
 			
+			
+			
+			
+			
+				function _text_display(my_message, t){
+					let div_tmp = document.getElementById("div_message");
+
+					if(div_tmp==null){
+						div_tmp        = document.createElement('div');
+						div_tmp.style      = "position:absolute; top:200px ; left:200px";
+					}
+
+					div_tmp.innerHTML  = my_message ;
+					div_tmp.id = "div_message";
+					t.message_id.appendChild(div_tmp);
+				}
+			
+			
 			const texture = loader.load( fullPath, function ( t ) {
 
 				console.log("MMDLoader_rev2: change here ",fullPath);
 			
+				
+				
+				
 	for (var key in my_t.b_array){
 		if(   my_t.b_array[key] == fullPath   ){
 			console.log(key);
+			_text_display("reading "+key, my_t);
+			setTimeout(function (){
+				my_t._text_display("", my_t);
+			},5000);
 			break;
 		}
 	}
