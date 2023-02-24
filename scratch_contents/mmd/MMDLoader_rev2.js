@@ -391,6 +391,7 @@
    */
 		convey(b_array,message_id){
 			this.b_array = b_array;
+			this.message_id = message_id;
 //	console.log("mesh builder" , this, b_array);
 			this.materialBuilder.convey(this.b_array, this.message_id);
 
@@ -1339,7 +1340,10 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 				return;
 			}
 			
-			
+			_text_display("reading "+filePath, my_t);
+			setTimeout(function (){
+				my_t._text_display("", my_t);
+			},5000);
 			
 			
 			
@@ -1348,7 +1352,7 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 
 					if(div_tmp==null){
 						div_tmp        = document.createElement('div');
-						div_tmp.style      = "position:absolute; top:200px ; left:5px";
+						div_tmp.style      = "position:absolute; top:230px ; left:5px";
 					}
 
 					div_tmp.innerHTML  = my_message ;
@@ -1367,10 +1371,7 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 	for (var key in my_t.b_array){
 		if(   my_t.b_array[key] == fullPath   ){
 			console.log(key);
-			_text_display("reading "+key, my_t);
-			setTimeout(function (){
-				my_t._text_display("", my_t);
-			},5000);
+			
 			break;
 		}
 	}
