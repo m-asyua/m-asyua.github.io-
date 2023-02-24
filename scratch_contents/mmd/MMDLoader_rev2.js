@@ -401,7 +401,7 @@
 			const geometry = this.geometryBuilder.build( data );
 
 			const material = this.materialBuilder.setCrossOrigin( this.crossOrigin ).setResourcePath( resourcePath ).build( data, geometry, onProgress, onError );
-		this.materialBuilder.convey(this.b_array, this_message_id);
+		this.materialBuilder.convey(this.b_array, this.message_id);
 			
 			
 			const mesh = new THREE.SkinnedMesh( geometry, material );
