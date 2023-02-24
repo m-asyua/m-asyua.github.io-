@@ -1342,7 +1342,7 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			
 			_text_display("reading "+filePath, my_t);
 			setTimeout(function (){
-				my_t._text_display("", my_t);
+				_text_display("", my_t);
 			},5000);
 			
 			
