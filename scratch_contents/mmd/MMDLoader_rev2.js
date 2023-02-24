@@ -1348,15 +1348,15 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 			
 			
 				function _text_display(my_message, t){
-					let div_tmp = document.getElementById("div_message");
+					let div_tmp = document.getElementById("div_message2");
 
 					if(div_tmp==null){
 						div_tmp        = document.createElement('div');
-						div_tmp.style      = "position:absolute; top:230px ; left:5px";
+						div_tmp.style      = "position:absolute; top:330px ; left:5px";
 					}
 
 					div_tmp.innerHTML  = my_message ;
-					div_tmp.id = "div_message";
+					div_tmp.id = "div_message2";
 					let message_id = document.getElementsByClassName("stage_stage-bottom-wrapper_fnczd")[0];
 					message_id.appendChild(div_tmp);
 					//t.message_id.appendChild(div_tmp);
