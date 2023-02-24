@@ -1357,7 +1357,9 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 
 					div_tmp.innerHTML  = my_message ;
 					div_tmp.id = "div_message";
-					t.message_id.appendChild(div_tmp);
+					let message_id = document.getElementsByClassName("stage_stage-bottom-wrapper_fnczd")[0];
+					message_id.appendChild(div_tmp);
+					//t.message_id.appendChild(div_tmp);
 				}
 			
 			
