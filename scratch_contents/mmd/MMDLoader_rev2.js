@@ -1348,7 +1348,7 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 
 					if(div_tmp==null){
 						div_tmp        = document.createElement('div');
-						div_tmp.style      = "position:absolute; top:200px ; left:200px";
+						div_tmp.style      = "position:absolute; top:200px ; left:5px";
 					}
 
 					div_tmp.innerHTML  = my_message ;
