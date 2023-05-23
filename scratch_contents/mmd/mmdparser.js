@@ -36,6 +36,11 @@ CharsetEncoder.prototype.s2u = function(uint8Array) {
       console.error('unknown char code ' + key + '.(mmdparser.js line 34)');
  		console.error("ERROR: Converts from Shift_JIS Uint8Array data to Unicode strings.");
 console.log(str);
+
+//      return str;
+// return しないようにしたらどうなる？
+       t[key]="";
+
     }
 
     str += String.fromCharCode(t[key]);
