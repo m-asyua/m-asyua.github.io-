@@ -1355,6 +1355,7 @@ console.log("MMDLoader_rev2:",fullPath,  this.resourcePath , filePath);
 						div_tmp.style      = "position:absolute; top:5px ; left:15px";
 						div_tmp.id = "div_message2";
 						let message_id = document.getElementsByClassName("stage_stage-bottom-wrapper_fnczd")[0];
+						if(message_id==undefined ){document.getElementsByClassName("stage_stage-bottom-wrapper_vRJed")[0];  } 
 						if(message_id==null){document.getElementsByClassName("stage_stage-bottom-wrapper_vRJed")[0];  } 
 						message_id.appendChild(div_tmp);
 						//t.message_id.appendChild(div_tmp);
